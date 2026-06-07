@@ -1,57 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SVG Coloring Page</title>
-
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial;
-    }
-
-    svg path, svg circle, svg rect, svg polygon {
-      cursor: pointer;
-      transition: 0.2s;
-    }
-  </style>
+  <title>SVG Test</title>
 </head>
 
 <body>
 
-<h2>Color Your Parrot 🎨</h2>
+<h2>SVG Loading Test</h2>
 
-<label>Pick Color: </label>
-<input type="color" id="colorPicker" value="#ff0000">
+<div id="status">Loading...</div>
 
-<br><br>
-
-<div id="svgContainer">Loading SVG...</div>
+<div id="svgContainer"></div>
 
 <script>
-let selectedColor = "#ff0000";
-
-// color picker
-document.getElementById("colorPicker").addEventListener("input", function(e) {
-    selectedColor = e.target.value;
-});
-
-// load your SVG file
 fetch("parrot-colouring.svg")
-  .then(res => res.text())
+  .then(res => {
+      if (!res.ok) {
+          throw new Error("File not found or wrong path");
+      }
+      return res.text();
+  })
   .then(data => {
+      document.getElementById("status").innerHTML = "✅ SVG Loaded Successfully";
       document.getElementById("svgContainer").innerHTML = data;
-
-      // make shapes clickable
-      document.querySelectorAll("svg path, svg circle, svg rect, svg polygon")
-      .forEach(el => {
-          el.addEventListener("click", function () {
-              this.setAttribute("fill", selectedColor);
-          });
-      });
   })
   .catch(err => {
-      document.getElementById("svgContainer").innerHTML =
-      "❌ SVG not loading. Check file name or upload location.";
+      document.getElementById("status").innerHTML =
+      "❌ ERROR: SVG not loading";
       console.log(err);
   });
 </script>
