@@ -2,13 +2,14 @@
 <html>
 <head>
   <title>SVG Coloring Page</title>
+
   <style>
     body {
-      font-family: Arial;
       text-align: center;
+      font-family: Arial;
     }
 
-    svg path, svg circle, svg rect {
+    svg path, svg circle, svg rect, svg polygon {
       cursor: pointer;
       transition: 0.2s;
     }
@@ -17,49 +18,42 @@
 
 <body>
 
-<h2>Click Shapes to Color 🎨</h2>
+<h2>Color Your Parrot 🎨</h2>
 
 <label>Pick Color: </label>
 <input type="color" id="colorPicker" value="#ff0000">
 
 <br><br>
 
-<!-- SAMPLE SVG (you can replace with your own SVG later) -->
-<svg width="300" height="300" viewBox="0 0 100 100">
-
-  <!-- Circle -->
-  <circle cx="50" cy="50" r="30"
-    fill="white"
-    stroke="black"
-    stroke-width="2"
-    onclick="paint(this)" />
-
-  <!-- Square -->
-  <rect x="10" y="10" width="20" height="20"
-    fill="white"
-    stroke="black"
-    stroke-width="2"
-    onclick="paint(this)" />
-
-  <!-- Triangle -->
-  <polygon points="70,10 90,40 50,40"
-    fill="white"
-    stroke="black"
-    stroke-width="2"
-    onclick="paint(this)" />
-
-</svg>
+<div id="svgContainer">Loading SVG...</div>
 
 <script>
 let selectedColor = "#ff0000";
 
+// color picker
 document.getElementById("colorPicker").addEventListener("input", function(e) {
     selectedColor = e.target.value;
 });
 
-function paint(element) {
-    element.setAttribute("fill", selectedColor);
-}
+// load your SVG file
+fetch("parrot-colouring.svg")
+  .then(res => res.text())
+  .then(data => {
+      document.getElementById("svgContainer").innerHTML = data;
+
+      // make shapes clickable
+      document.querySelectorAll("svg path, svg circle, svg rect, svg polygon")
+      .forEach(el => {
+          el.addEventListener("click", function () {
+              this.setAttribute("fill", selectedColor);
+          });
+      });
+  })
+  .catch(err => {
+      document.getElementById("svgContainer").innerHTML =
+      "❌ SVG not loading. Check file name or upload location.";
+      console.log(err);
+  });
 </script>
 
 </body>
