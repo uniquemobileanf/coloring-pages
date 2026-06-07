@@ -1,13 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Coloring Page</title>
+  <title>SVG Coloring Page</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+    }
+
+    svg path, svg circle, svg rect {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>My Coloring Page</h2>
+<h2>Click Shapes to Color 🎨</h2>
 
-<p>Upload working test page</p>
+<label>Pick Color: </label>
+<input type="color" id="colorPicker" value="#ff0000">
+
+<br><br>
+
+<!-- SAMPLE SVG (you can replace with your own SVG later) -->
+<svg width="300" height="300" viewBox="0 0 100 100">
+
+  <!-- Circle -->
+  <circle cx="50" cy="50" r="30"
+    fill="white"
+    stroke="black"
+    stroke-width="2"
+    onclick="paint(this)" />
+
+  <!-- Square -->
+  <rect x="10" y="10" width="20" height="20"
+    fill="white"
+    stroke="black"
+    stroke-width="2"
+    onclick="paint(this)" />
+
+  <!-- Triangle -->
+  <polygon points="70,10 90,40 50,40"
+    fill="white"
+    stroke="black"
+    stroke-width="2"
+    onclick="paint(this)" />
+
+</svg>
+
+<script>
+let selectedColor = "#ff0000";
+
+document.getElementById("colorPicker").addEventListener("input", function(e) {
+    selectedColor = e.target.value;
+});
+
+function paint(element) {
+    element.setAttribute("fill", selectedColor);
+}
+</script>
 
 </body>
 </html>
